@@ -7,7 +7,7 @@ import { deflateRawSync } from 'node:zlib';
 import { bundle } from './bundle.js';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const DIST = join(ROOT, 'dist');
+const DIST = join(ROOT, 'docs'); // GitHub Pages がそのまま配信できるフォルダ名（設定: main / docs）
 const RELEASE = join(ROOT, 'release');
 const pkg = JSON.parse(await readFile(join(ROOT, 'package.json'), 'utf8'));
 
@@ -128,6 +128,6 @@ const zipPath = join(RELEASE, `${pkg.name}_${stamp}.zip`);
 await writeFile(zipPath, createZip(entries));
 
 const total = entries.reduce((s, e) => s + e.data.length, 0);
-console.log(`dist/ に ${entries.length} ファイルを出力しました（${(total / 1024).toFixed(0)} KB）`);
+console.log(`docs/ に ${entries.length} ファイルを出力しました（${(total / 1024).toFixed(0)} KB）`);
 for (const e of entries) console.log(`  ${e.name}`);
 console.log(`ZIP: ${relative(ROOT, zipPath)}`);

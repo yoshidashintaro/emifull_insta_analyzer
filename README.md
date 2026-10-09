@@ -35,11 +35,12 @@ npm install
 npm run build
 ```
 
-`dist/` にアップロード用のファイル一式が、`release/insta-insight-analyzer_日付.zip` に同じ内容の ZIP ができます。
+`docs/` にアップロード用のファイル一式が、`release/insta-insight-analyzer_日付.zip` に同じ内容の ZIP ができます。
 サーバー側のプログラム（PHP・Node.js など）は不要で、HTML/CSS/JS を置ける Web サーバーならどこでも動きます。
 
-- **レンタルサーバー（エックスサーバー・さくら・ロリポップ等）**：`dist/` の**中身**を FTP やファイルマネージャーで公開フォルダ（例: `public_html/insta/`）にアップロードします。`.htaccess` も一緒にアップロードしてください（隠しファイルなので FTP ソフトの設定で表示させる必要がある場合があります）。
-- **Netlify / Cloudflare Pages / GitHub Pages**：`dist/` フォルダをそのまま公開ディレクトリに指定します。
+- **レンタルサーバー（エックスサーバー・さくら・ロリポップ等）**：`docs/` の**中身**を FTP やファイルマネージャーで公開フォルダ（例: `public_html/insta/`）にアップロードします。`.htaccess` も一緒にアップロードしてください（隠しファイルなので FTP ソフトの設定で表示させる必要がある場合があります）。
+- **GitHub Pages**：リポジトリの Settings → Pages で「Deploy from a branch」→ ブランチ `main` → フォルダ `/docs` を選ぶと、`docs/` がそのまま配信されます（ビルド結果は git 管理に含めています）。
+- **Netlify / Cloudflare Pages**：`docs/` フォルダをそのまま公開ディレクトリに指定します。
 - ルート直下（`https://example.com/`）でもサブフォルダ（`https://example.com/insta/`）でも動きます。
 - **HTTPS で公開してください。** アクセストークンを入力する画面があるため、http のままだと通信経路で盗み見られるおそれがあります。SSL 設定済みなら `.htaccess` 末尾の HTTPS 転送のコメントを外すと、http でのアクセスを自動で https へ転送します。
 - データは見る人それぞれのブラウザに保存されます。同じ URL を複数人で開いても、互いのデータやトークンは見えません。
@@ -211,8 +212,9 @@ public/js/data/xlsx.js      Excel(.xlsx) の読み取り（依存なし）
 public/js/data/ga4.js       GA4 流入データの解析
 public/js/data/demo.js      デモデータ生成
 samples/                  CSV のサンプル
-scripts/build.js          公開用ファイルの出力（npm run build → dist/, release/*.zip）
-deploy/.htaccess          Apache 用の設定（ビルド時に dist/ へコピー）
+scripts/build.js          公開用ファイルの出力（npm run build → docs/, release/*.zip）
+deploy/.htaccess          Apache 用の設定（ビルド時に docs/ へコピー）
+docs/                     ビルド結果（GitHub Pages で配信。npm run build で再生成）
 tests/                    単体テスト（npm test）
 tests/fixtures/           各ツールの書き出しと同じ形式のテスト用 CSV（Meta は UTF-16LE）
 ```
