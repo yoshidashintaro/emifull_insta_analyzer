@@ -1,0 +1,38 @@
+# Apache（エックスサーバー・さくらのレンタルサーバ・ロリポップ等）用の設定
+# アップロード先フォルダにそのまま置いてください。
+
+# 一覧表示を禁止
+Options -Indexes
+
+DirectoryIndex index.html
+
+# 文字コードと MIME タイプ（JS モジュールは正しい MIME でないと読み込めない）
+AddDefaultCharset UTF-8
+<IfModule mod_mime.c>
+  AddType text/javascript .js .mjs
+  AddType text/css .css
+  AddType text/csv .csv
+  AddCharset UTF-8 .html .js .css .csv
+</IfModule>
+
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set Referrer-Policy "no-referrer"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  # 更新をすぐ反映させるため、HTML/JS/CSS は毎回サーバーに確認させる
+  <FilesMatch "\.(html|js|css)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
+# 圧縮転送
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/javascript application/javascript text/csv
+</IfModule>
+
+# HTTPS へ転送（SSL 設定済みのサーバーでのみ有効にしてください）
+# <IfModule mod_rewrite.c>
+#   RewriteEngine On
+#   RewriteCond %{HTTPS} off
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+# </IfModule>
